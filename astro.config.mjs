@@ -1,7 +1,17 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+// import nodejs from '@astrojs/node';
+// import netlify from '@astrojs/netlify/functions';
+// import netlify from '@astrojs/netlify';
+
 
 export default defineConfig({
   integrations: [sitemap()],
-  site: "https://astro-theme-creek.netlify.app/",
+  site: "https://3rdCoastNibbles.sipps/",
+  // output: "hybrid",
+  // output: "server",
+  // adapter: netlify()
+  // adapter: nodejs({
+  //   mode: 'middleware'
+  // })
 });

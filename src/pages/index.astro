@@ -1,20 +1,45 @@
 ---
+import type { GetStaticPaths } from "astro";
 import BaseHead from '../components/Head/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import HomeHeader from '../components/HomeHeader.astro';
 import Card from '../components/Card.astro';
-import Footer from '../components/Footer/Footer.astro'
+import Footer from '../components/Footer/Footer.astro';
+import { getAllPosts } from '../lib/cosmic.js';
+import { createClient } from '@supabase/supabase-js';
+import * as dotenv from "dotenv";
 
-interface MarkdownFrontmatter {
-  date: number;
+dotenv.config();
+
+const rateLimit = require("lambda-rate-limiter")({
+	interval: 60 * 1000 // Our rate-limit interval, one minute
+}).check;
+
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  process.env.DATABASE, 
+  process.env.DATABASE_KEY,
+  {
+    auth: {
+      persistSession: false,
+    }
+  }
+);
+
+
+
+export function onMount () {
+  // console.log('Index onMount');
+  // console.log(Astro);
 }
 
-const title = 'Creek';
-const description = 'A Theme for Astro';
-const seoDescription = 'Creek is a theme for Astro static site generator';
 
-const allPosts = await Astro.glob<MarkdownFrontmatter>('./posts/*.md');
-const sortedPosts = allPosts.sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf());
+const title = 'Nibbles & Sipps';
+const description = 'A foodie blog serving up the Texas Gulf Coast. We focus on the best food and drink in the Corpus Christi area.';
+const seoDescription = 'Food and drink blog Texas Gulf Coast Corpus Christi area.';
+const allPosts = await getAllPosts();
+const sortedPosts = allPosts.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
 ---
 
 <html lang="en">
@@ -45,5 +70,4 @@ const sortedPosts = allPosts.sort((a, b) => new Date(b.frontmatter.pubDate).valu
 
   <Footer />
 </body>
-
 </html>

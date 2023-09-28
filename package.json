@@ -1,5 +1,5 @@
 {
-  "name": "astro-theme-creek",
+  "name": "3rdCoastNibbles",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,18 +10,31 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^2.8.3",
+    "astro": "^3.1.0",
     "globby": "^13.2.2",
     "mark.js": "^8.11.1",
     "sass": "^1.63.6",
     "tailwindcss": "^3.3.3"
   },
   "dependencies": {
+    "@astrojs/netlify": "^3.0.1",
+    "@astrojs/node": "^6.0.0",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^1.4.0",
+    "@cosmicjs/sdk": "^1.0.9",
+    "@supabase/supabase-js": "^2.33.1",
     "autoprefixer": "^10.4.14",
+    "cosmicjs": "^4.3.7",
     "dayjs": "^1.11.9",
+    "dotenv": "^16.3.1",
     "lunr": "^2.3.9",
+    "marked": "^9.0.2",
+    "nanostores": "^0.9.3",
     "sitemap": "^7.1.1"
-  }
+  },
+  "description": "Food blog for the Corpus Christi, Texas area.",
+  "main": "index.js",
+  "repository": "https://github.com/robertguss/Astro-Theme-Creek.git",
+  "author": "Bryan Thetford <bryan.thetford@gmail.com>",
+  "license": "MIT"
 }

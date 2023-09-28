@@ -1,12 +1,15 @@
 import rss from "@astrojs/rss";
+import { getAllPosts } from '../../lib/cosmic.js';
 
-const postImportResult = import.meta.globEager("./posts/*.md");
-const posts = Object.values(postImportResult);
+const allPosts = await getAllPosts();
+const sortedPosts = allPosts.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
 
 export const get = () =>
   rss({
-    title: "Astro Theme Creek",
-    description: "A Theme for Astro",
+    title: "3rd Coast Nibbles & Sipps",
+    description: "A blog about the best food and drinks in the Texas Coastal Bend.",
     site: import.meta.env.SITE,
-    items: import.meta.glob("./posts/**/*.md"),
+    items: sortedPosts,
   });
+
+

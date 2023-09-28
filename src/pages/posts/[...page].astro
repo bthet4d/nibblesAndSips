@@ -5,11 +5,11 @@ import HomeHeader from '../../components/HomeHeader.astro';
 import Card from '../../components/Card.astro';
 import Footer from '../../components/Footer/Footer.astro'
 import Paginator from '../../components/Paginator.astro'
+import { getAllPosts, getPostBySlug } from '../../lib/cosmic.js';
 
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await Astro.glob<MarkdownFrontmatter>('./*.md');
-  const sortedPosts = allPosts.sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf());
-
+  const allPosts = await getAllPosts();
+  const sortedPosts = allPosts.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
 
   return paginate(sortedPosts, {
     pageSize: 21
@@ -19,7 +19,7 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props
 let pageTitle = 'Articles';
 let pageDescription = `page ${page.currentPage} of all articles`;
-let seoTitle = 'Articles | Creek';
+let seoTitle = 'Articles | 3rd Coast Nibbles & Sipps';
 let seoDescription = '';
 ---
 

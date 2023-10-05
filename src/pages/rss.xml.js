@@ -1,5 +1,5 @@
 import rss from "@astrojs/rss";
-import { getAllPosts } from '../../lib/cosmic.js';
+import { getAllPosts } from '../../src/lib/cosmic.js';
 
 const allPosts = await getAllPosts();
 const sortedPosts = allPosts.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());

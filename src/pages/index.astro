@@ -6,28 +6,7 @@ import HomeHeader from '../components/HomeHeader.astro';
 import Card from '../components/Card.astro';
 import Footer from '../components/Footer/Footer.astro';
 import { getAllPosts } from '../lib/cosmic.js';
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
-const rateLimit = require("lambda-rate-limiter")({
-	interval: 60 * 1000 // Our rate-limit interval, one minute
-}).check;
-
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  process.env.DATABASE, 
-  process.env.DATABASE_KEY,
-  {
-    auth: {
-      persistSession: false,
-    }
-  }
-);
-
-
+// import { supabase } from '../lib/supabase.js';
 
 export function onMount () {
   // console.log('Index onMount');

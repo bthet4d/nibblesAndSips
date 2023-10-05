@@ -1,7 +1,129 @@
 ---
+import { DB_KEY, DB_URL, supabase } from "../lib/supabase";
+
+let post = Astro.props;
+let postHasComments = false;
+const { data, error } = await supabase
+  .from('comments')
+  .select()
+  .eq('slug', post.slug)
+  .eq('approved', true);
+
+if (error) {
+    console.log('Error fetching comments', error);
+} else {
+    console.log('Comments', data);
+    if (data.length > 0) {
+        postHasComments = true;
+    }
+}
+
+const commentClasses = [
+  "bg-gray-100",
+  "bg-gray-200",
+  "bg-gray-300",
+  "bg-gray-400",
+  "bg-gray-500",
+];
+
 
 ---
+<script>
+  import { DB_KEY, supabase } from "../lib/supabase";
+  function submitComment(e) {
+    e.preventDefault();
+    const captcha = (document.getElementById('captcha')as HTMLInputElement).value;
+    if (captcha !== 'supabase') {
+      alert('Please enter the correct captcha');
+      return;
+    } else {
+      const commentPosted = postComment(
+        {
+          name: (document.getElementById('user-name')as HTMLInputElement).value,
+          comment: (document.getElementById('comment')as HTMLInputElement).value,
+          slug: "{{post.slug}}"
+        },
+        { headers: { Authorization: 'Bearer ' + DB_KEY } },
+      );
 
-<div>
-    <p>Comments</p>
-</div>
+      if (commentPosted) {
+        alert("Your comment has been submitted and is awaiting approval.");
+      } else {
+        alert('We apologize, there was an error posting comment. Please try again later.');
+      }
+    }
+  }
+
+  async function postComment(commentData, options) {
+    console.log('posting comment');
+    console.log('Comment Data');
+    console.log(commentData);
+    const { data, error } = await supabase.from('comments').insert(commentData, options);
+    if (error) {
+      console.log('Error submitting comment', error);
+      return false;
+    } else {
+      console.log('Comment submitted', data);
+      return true;
+    }
+
+  }
+
+  //add event listener to form
+  const form = document.getElementById('comment-form');
+  form.addEventListener('submit', submitComment);
+</script>
+<div class="mx-auto my-4 max-w-md">
+    <form 
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        id="comment-form"
+    >
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="name">
+          Name
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="user-name"
+          type="text"
+          placeholder="Enter your name"
+        />
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 font-bold mb-2" for="comment">
+          Comment
+        </label>
+        <textarea
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="comment"
+          placeholder="Enter your comment"
+        ></textarea>
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 font-bold mb-2" for="captcha">
+          Please enter "supabase" to prove you're not a robot:
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="captcha"
+          type="text"
+          placeholder="Enter captcha"
+        />
+      </div>
+      <div class="flex items-center justify-center">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-bold mb-4">Comments</h2>
+        {postHasComments ? <p>Show Comments</p> : <p>No Comments</p>}
+
+    </div>
+    
+  </div>

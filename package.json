@@ -17,7 +17,7 @@
     "tailwindcss": "^3.3.3"
   },
   "dependencies": {
-    "@astrojs/netlify": "^3.0.1",
+    "@astrojs/netlify": "^3.0.2",
     "@astrojs/node": "^6.0.0",
     "@astrojs/rss": "^2.4.3",
     "@astrojs/sitemap": "^1.4.0",

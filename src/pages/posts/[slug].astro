@@ -5,8 +5,8 @@ import Nav from '../../components/Nav.astro';
 import HomeHeader from '../../components/HomeHeader.astro';
 import Footer from '../../components/Footer/Footer.astro';
 import { marked } from 'marked';
-import Comments from '../../components/Comments.astro';
 import { getAllPosts } from '../../lib/cosmic.js';
+import Comments from '../../components/Comments.astro';
 
 export async function getStaticPaths() {
   const data = (await getAllPosts()) || [];
@@ -20,12 +20,11 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-console.log("Post: ", post);
-let pageTitle = post.title;
-let pageDescription = post.metadata.excerpt;
-let seoTitle = '3rd Coast Nibbles & Sipps - ' + post.title;
-let seoDescription = post.slug;
-let content = marked.parse(post.metadata.content);
+const pageTitle = post.title;
+const pageDescription = post.metadata.excerpt;
+const seoTitle = '3rd Coast Nibbles & Sipps - ' + post.title;
+const seoDescription = post.slug;
+const content = marked.parse(post.metadata.content);
 
 ---
 <html lang="en">
@@ -58,7 +57,10 @@ let content = marked.parse(post.metadata.content);
       </section>
     </article>
   </main>
-  <Comments />
+  
+  <!-- <Utterances /> -->
+  <Comments post={post}/>
+
   <Footer />
 </body>
 
